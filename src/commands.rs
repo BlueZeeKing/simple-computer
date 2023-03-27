@@ -1,3 +1,5 @@
+use std::str::FromStr;
+
 use crate::error::Error;
 
 #[derive(Debug, PartialEq)]
@@ -8,8 +10,8 @@ pub enum Commands {
     Back(isize, bool),
 }
 
-impl Commands {
-    pub fn from_str(value: &str) -> Result<Self, Error> {
+impl FromStr for Commands {
+    fn from_str(value: &str) -> Result<Self, Error> {
         match value {
             "plus" => Ok(Self::Plus),
             "minus" => Ok(Self::Minus),
@@ -24,6 +26,10 @@ impl Commands {
         }
     }
 
+    type Err = Error;
+}
+
+impl Commands {
     pub fn parse_commands(input: &str) -> Vec<Commands> {
         input
             .lines()
