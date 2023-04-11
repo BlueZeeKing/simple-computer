@@ -7,7 +7,8 @@ pub enum Commands {
     Plus,
     Minus,
     Output,
-    Back(isize, bool),
+    Back(isize),
+    Nop,
 }
 
 impl FromStr for Commands {
@@ -18,7 +19,7 @@ impl FromStr for Commands {
             "output" => Ok(Self::Output),
             value => {
                 if value.starts_with("back") {
-                    Ok(Self::Back(value.trim_start_matches("back ").trim().parse()?, false))
+                    Ok(Self::Back(value.trim_start_matches("back ").trim().parse()?))
                 } else {
                     Err(Error::Parse)
                 }
@@ -49,8 +50,8 @@ mod tests {
         assert_eq!(Commands::from_str("plus").unwrap(), Commands::Plus);
         assert_eq!(Commands::from_str("minus").unwrap(), Commands::Minus);
 
-        assert_eq!(Commands::from_str("back 1").unwrap(), Commands::Back(1, false));
-        assert_eq!(Commands::from_str("back 2").unwrap(), Commands::Back(2, false));
-        assert_eq!(Commands::from_str("back 3").unwrap(), Commands::Back(3, false));
+        assert_eq!(Commands::from_str("back 1").unwrap(), Commands::Back(1));
+        assert_eq!(Commands::from_str("back 2").unwrap(), Commands::Back(2));
+        assert_eq!(Commands::from_str("back 3").unwrap(), Commands::Back(3));
     }
 }

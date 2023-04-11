@@ -41,12 +41,12 @@ impl<'a, T: std::io::Write> Iterator for SimpleComputer<'a, T> {
                     }
                 }
             }
-            Commands::Back(distance, false) => {
+            Commands::Back(distance) => {
                 if self.current_index - distance < 0 {
                     return Some(Err(Error::TooFarBack));
                 }
 
-                self.commands[self.current_index as usize] = Commands::Back(distance, true);
+                self.commands[self.current_index as usize] = Commands::Nop;
                 self.current_index -= distance + 1;
             }
             _ => (),
@@ -72,7 +72,7 @@ mod tests {
                 Commands::Plus,
                 Commands::Plus,
                 Commands::Output,
-                Commands::Back(2, false)
+                Commands::Back(2)
             ],
             &mut out
         ).for_each(|value| value.unwrap());
